@@ -1,0 +1,71 @@
+
+INSERTING ELEMENTS TO THE EMPLOYEE TABLE
+
+
+EX:
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Scanner;
+
+
+public class Main {
+   public static void main(String[] args) {
+       try(
+               Scanner scanner = new Scanner(System.in);
+               Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/durgadb", "root", "Nagoor@786");
+               Statement statement = connection.createStatement();
+               ){
+           while(true){
+               System.out.print("Employee Number    : ");
+               int eno = scanner.nextInt();
+               System.out.print("Employee Name      : ");
+               String ename = scanner.next();
+               System.out.print("Employee Salary    : ");
+               float esal = scanner.nextFloat();
+               System.out.print("Employee Address   : ");
+               String eaddr = scanner.next();
+
+
+               //insert into emp1 values(111, 'AAA', 5000, 'Hyd')
+               String query = "insert into emp1 values("+eno+",'"+ename+"',"+esal+",'"+eaddr+"')";
+               int rowCount = statement.executeUpdate(query);
+               if(rowCount == 1){
+                   System.out.println("Employee "+eno+" Inserted Successfully");
+               }else{
+                   System.out.println("Employee "+eno+" Insertion Failed");
+               }
+               System.out.print("One more Employee? [Yes/No]    : ");
+               String nextEmployeeOption = scanner.next();
+               if(nextEmployeeOption.equalsIgnoreCase("yes")){
+                   continue;
+               }else{
+                   break;
+               }
+
+
+           }
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+   }
+}
+
+Employee Number    : 111
+Employee Name      : Durga
+Employee Salary    : 50000
+Employee Address   : Hyd
+Employee 111 Inserted Successfully
+One more Employee? [Yes/No]    : yes
+Employee Number    : 222
+Employee Name      : Anil
+Employee Salary    : 60000
+Employee Address   : Chennai
+Employee 222 Inserted Successfully
+One more Employee? [Yes/No]    : yes
+Employee Number    : 333
+Employee Name      : Ramesh
+Employee Salary    : 70000
+Employee Address   : Pune
+Employee 333 Inserted Successfully
+One more Employee? [Yes/No]    : no
