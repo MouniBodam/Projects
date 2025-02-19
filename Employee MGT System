@@ -1,0 +1,84 @@
+create table emp1(ENO int(5), ENAME char(10), ESAL float(5), EADDR char(10), primary key(ENO,ENAME));
+
+
+CREATION OF EMPLOYEE TABLE
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+
+public class Main {
+   public static void main(String[] args) {
+       try(
+               BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+               Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/durgadb", "root", "Nagoor@786");
+               Statement statement = connection.createStatement();
+               ){
+           String primaryKeyColumns = "";
+           int primaryKeyColumnCount = 0;
+           System.out.print("Table Name      : ");
+           String tableName = bufferedReader.readLine();
+           String query = "create table "+tableName+"(";
+           while(true){
+               System.out.print("Column Name      : ");
+               String columnName = bufferedReader.readLine();
+               System.out.print("Column Type      : ");
+               String columnType = bufferedReader.readLine();
+               System.out.print("Column Size      : ");
+               int columnSize = Integer.parseInt(bufferedReader.readLine());
+               System.out.print("Is Primary Key?  : ");
+               String isPrimaryKey = bufferedReader.readLine();
+               query = query + columnName + " " + columnType + "(" + columnSize + "),";
+               if(isPrimaryKey.equalsIgnoreCase("Yes")){
+                   primaryKeyColumnCount = primaryKeyColumnCount + 1;
+                   if(primaryKeyColumnCount == 1){
+                       primaryKeyColumns = columnName;
+                   }else {
+                       primaryKeyColumns = primaryKeyColumns + "," + columnName;
+                   }
+               }
+               System.out.print("One more Column?   [Yes/No]  : ");
+               String nextColumnOption = bufferedReader.readLine();
+               if(nextColumnOption.equalsIgnoreCase("Yes")){
+                   continue;
+               }else {
+                   query = query + "primary key("+primaryKeyColumns+"))";
+                   break;
+               }
+
+
+           }
+           //System.out.println(query);
+           statement.executeUpdate(query);
+           System.out.println("Table "+tableName+" created Successfully");
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+   }
+}
+
+Table Name      : emp2
+Column Name      : ENO
+Column Type      : int
+Column Size      : 5
+Is Primary Key?  : yes
+One more Column?   [Yes/No]  : yes
+Column Name      : ENAME
+Column Type      : char
+Column Size      : 10
+Is Primary Key?  : yes
+One more Column?   [Yes/No]  : yes
+Column Name      : ESAL
+Column Type      : float
+Column Size      : 5
+Is Primary Key?  : no
+One more Column?   [Yes/No]  : yes
+Column Name      : EADDR
+Column Type      : char
+Column Size      : 10
+Is Primary Key?  : no
+One more Column?   [Yes/No]  : no
+Table emp2 created Successfully
