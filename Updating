@@ -1,0 +1,35 @@
+Updating The Employee Table
+
+
+
+EX:
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Scanner;
+
+
+public class Main {
+   public static void main(String[] args) {
+       try(
+               Scanner scanner = new Scanner(System.in);
+               Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/durgadb", "root", "Nagoor@786");
+               Statement statement = connection.createStatement();
+               ){
+           System.out.print("Bonus Amount      : ");
+           int bonusAmount = scanner.nextInt();
+           System.out.print("Salary Range      : ");
+           float salaryRange = scanner.nextFloat();
+
+
+           int rowCount = statement.executeUpdate("update emp1 set ESAL = ESAL + "+bonusAmount+" where ESAL < " + salaryRange);
+           System.out.println("Employees Updated     : "+rowCount);
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+   }
+}
+
+Bonus Amount      : 5000
+Salary Range      : 100000
+Employees Updated     : 3
